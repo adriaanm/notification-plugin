@@ -76,7 +76,7 @@ public enum Phase {
         Result             result       = run.getResult();
         ParametersAction   paramsAction = run.getAction(ParametersAction.class);
         EnvVars            environment  = run.getEnvironment( listener );
-        StringBuilder      log          = this.getLog(run, target);
+        // StringBuilder      log          = this.getLog(run, target);
 
         jobState.setName( job.getName());
         jobState.setUrl( job.getUrl());
@@ -86,7 +86,7 @@ public enum Phase {
         buildState.setUrl( run.getUrl());
         buildState.setPhase( this );
         buildState.setScm( scmState );
-        buildState.setLog( log );
+        buildState.setLog( new StringBuilder("") ); // avoid https://issues.jenkins-ci.org/browse/JENKINS-27441 
 
         if ( result != null ) {
             buildState.setStatus(result.toString());
@@ -96,7 +96,8 @@ public enum Phase {
             buildState.setFullUrl(rootUrl + run.getUrl());
         }
 
-        buildState.updateArtifacts( job, run );
+        // avoid https://issues.jenkins-ci.org/browse/JENKINS-26162
+        // buildState.updateArtifacts( job, run );
 
         if ( paramsAction != null ) {
             EnvVars env = new EnvVars();
