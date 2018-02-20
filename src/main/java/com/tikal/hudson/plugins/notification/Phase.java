@@ -67,6 +67,7 @@ public enum Phase {
                                                   target.getFormat().serialize(jobState),
                                                   target.getTimeout(),
                                                   target.isJson());
+                        listener.getLogger().println( String.format( "Notification sent with status %s", jobState.getBuild().getStatus()));
                     } catch (Throwable error) {
                         failed = true;
                         error.printStackTrace( listener.error( String.format( "Failed to notify endpoint with %s", urlIdString)));
