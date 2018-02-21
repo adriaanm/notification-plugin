@@ -21,6 +21,10 @@ import java.util.logging.Logger;
 public class NotificationSendStep extends AbstractStepImpl {
     private static final Logger logger = Logger.getLogger(NotificationSendStep.class.getName());
 
+    @DataBoundConstructor
+    public NotificationSendStep() {
+    }
+
     @Extension
     public static class DescriptorImpl extends AbstractStepDescriptorImpl {
 
