@@ -21,9 +21,24 @@ import java.util.logging.Logger;
 public class NotificationSendStep extends AbstractStepImpl {
     private static final Logger logger = Logger.getLogger(NotificationSendStep.class.getName());
 
-    @DataBoundConstructor
-    public NotificationSendStep() {
+    private final @Nonnull String message;
+    @Nonnull
+    public String getMessage() {
+        return message;
     }
+
+    private final boolean done;
+    public boolean isDone() {
+        return done;
+    }
+
+
+    @DataBoundConstructor
+    public NotificationSendStep(@Nonnull String message, boolean done) {
+        this.message = message;
+        this.done = done;
+    }
+
 
     @Extension
     public static class DescriptorImpl extends AbstractStepDescriptorImpl {
@@ -58,7 +73,8 @@ public class NotificationSendStep extends AbstractStepImpl {
         @Override
         protected Void run() throws Exception {
             logger.info("Notification for "+ run.getFullDisplayName() +": "+ run.getBuildStatusSummary().message +" building= "+ run.isBuilding());
-            Phase phase = run.isBuilding() ? Phase.STARTED : Phase.COMPLETED;
+            logger.info(step.getMessage() + (step.done ? "completed" : "started" ));
+            Phase phase = step.done ? Phase.COMPLETED : Phase.STARTED;
 
             phase.handle(run, listener, run.getTimeInMillis() + run.getDuration());
 
